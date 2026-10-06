@@ -10,16 +10,15 @@
     <div class="container">
         <h1>SmartLearn AI</h1>
         <h2>Instant Study Guide & Quiz Generator</h2>
-        <p>Paste your notes below to generate summaries and an interactive quiz.</p>
 
         {% if error %}
             <div class="error-banner">{{ error }}</div>
         {% endif %}
 
         <form action="/generate" method="POST">
-            <label for="raw_notes">RAW STUDY NOTES</label>
-            <textarea id="raw_notes" name="raw_notes" placeholder="Paste lecture notes or textbook chapters here..."></textarea>
-            <button type="submit">+ Generate Study Guide</button>
+            <label for="raw_notes">Raw Study Notes</label>
+            <textarea id="raw_notes" name="raw_notes" placeholder="Paste your lecture notes, textbook chapters, or summary paragraphs here..."></textarea>
+            <button type="submit">✨ Generate Study Guide</button>
         </form>
     </div>
 </body>

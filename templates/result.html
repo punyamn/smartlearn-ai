@@ -3,52 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your AI Study Guide - SmartLearn</title>
+    <title>Study Guide - SmartLearn AI</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    <link href="[https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap](https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap)" rel="stylesheet">
 </head>
 <body>
-    <div class="page-wrapper">
-        <header class="navbar">
-            <div class="logo">🎓 Smart<span>Learn AI</span></div>
-            <a href="/" class="nav-link">← New Notes</a>
-        </header>
+    <div class="container">
+        <h1>Generated Study Guide</h1>
+        <h2>Key Summaries & Practice Quiz</h2>
 
-        <main class="content-container">
-            <div class="card">
-                <div class="card-header">
-                    <h2>📌 Key Concept Summary</h2>
-                </div>
-                <ul class="summary-list">
-                    {% for point in summary %}
-                        <li>{{ point }}</li>
-                    {% endfor %}
-                </ul>
-            </div>
+        <h3>📌 Core Takeaways</h3>
+        <ul class="summary-list">
+            {% for item in summary %}
+                <li>{{ item }}</li>
+            {% endfor %}
+        </ul>
 
-            <div class="card margin-top">
-                <div class="card-header">
-                    <h2>🧪 Interactive Practice Quiz</h2>
-                    <p>Click on an option to check your answer instantly!</p>
-                </div>
-
-                <div class="quiz-container">
-                    {% for q in quiz %}
-                        <div class="quiz-item" data-correct="{{ q.answer }}">
-                            <h3>Q{{ loop.index }}. {{ q.question }}</h3>
-                            <div class="options-grid">
-                                {% for opt in q.options %}
-                                    <button class="option-btn" onclick="checkAnswer(this)">{{ opt }}</button>
-                                {% endfor %}
-                            </div>
-                            <p class="feedback-text"></p>
-                        </div>
+        <h3>📝 Quick Quiz</h3>
+        {% for q in quiz %}
+            <div class="quiz-card">
+                <p><strong>Q{{ loop.index }}: {{ q.question }}</strong></p>
+                <div class="options-grid">
+                    {% for opt in q.options %}
+                        <div class="option-item">{{ opt }}</div>
                     {% endfor %}
                 </div>
             </div>
-        </main>
+        {% endfor %}
+
+        <br><br>
+        <a href="/" class="btn">← Back to Notes</a>
     </div>
-
-    <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 </html>
