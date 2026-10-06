@@ -2,6 +2,7 @@ import os
 import json
 from flask import Flask, render_template, request
 from google import genai
+from google.genai import types
 
 app = Flask(__name__)
 
@@ -24,8 +25,8 @@ def generate():
         return render_template('index.html', error="GEMINI_API_KEY is missing on Render Environment Variables.")
 
     prompt = f"""
-You are an expert AI tutor. Analyze the following study notes and return a valid JSON object with:
-1. "summary": A list of clear, high-impact bullet point strings summarizing key concepts.
+Analyze the following study notes and output a valid JSON object with:
+1. "summary": A list of clear bullet point strings summarizing key concepts.
 2. "quiz": A list of 3 multiple-choice question objects, each containing:
    - "question": string
    - "options": list of 4 choice strings
@@ -36,19 +37,26 @@ Notes:
 """
 
     try:
-        response = client.models.generate_content(
-            model='gemini-3.8-flash',
-            contents=prompt
-        )
+        # Enforce JSON output format
+        config = types.GenerateContentConfig(response_mime_type="application/json")
         
-        # Clean response text and parse JSON
-        text_response = response.text.strip()
-        if text_response.startswith("```json"):
-            text_response = text_response.replace("```json", "", 1).rstrip("```").strip()
-        elif text_response.startswith("```"):
-            text_response = text_response.replace("```", "", 1).rstrip("```").strip()
+        # Primary call using gemini-2.5-flash
+        try:
+            response = client.models.generate_content(
+                model='gemini-2.5-flash',
+                contents=prompt,
+                config=config
+            )
+        except Exception as primary_error:
+            # Fallback to gemini-1.5-flash if 503 or demand spike occurs
+            print(f"Primary model failed ({primary_error}), trying fallback model...")
+            response = client.models.generate_content(
+                model='gemini-1.5-flash',
+                contents=prompt,
+                config=config
+            )
 
-        data = json.loads(text_response)
+        data = json.loads(response.text)
         return render_template('result.html', summary=data.get('summary', []), quiz=data.get('quiz', []))
 
     except Exception as e:
