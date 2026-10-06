@@ -29,13 +29,12 @@ Notes:
 """
 
     try:
-        # Calls the current active Gemini 2.5 Flash model
+        # Calls the active Gemini 3.8 Flash model
         response = client.models.generate_content(
             model='gemini-3.8-flash',
             contents=prompt
         )
         
-        # Parse output or fallback handling
         output = response.text
         return render_template('result.html', result=output)
 

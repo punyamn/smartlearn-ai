@@ -3,39 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SmartLearn AI - Notes to Quiz</title>
+    <title>SmartLearn AI</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    <link href="[https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap](https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap)" rel="stylesheet">
 </head>
 <body>
-    <div class="page-wrapper">
-        <header class="navbar">
-            <div class="logo">🎓 Smart<span>Learn AI</span></div>
-        </header>
+    <div class="container">
+        <h1>SmartLearn AI</h1>
+        <h2>Instant Study Guide & Quiz Generator</h2>
+        <p>Paste your notes below to generate summaries and an interactive quiz.</p>
 
-        <main class="content-container">
-            <div class="card">
-                <div class="card-header">
-                    <h2>Instant Study Guide & Quiz Generator</h2>
-                    <p>Paste your notes below to generate summaries and an interactive quiz.</p>
-                </div>
+        {% if error %}
+            <div class="error-banner">{{ error }}</div>
+        {% endif %}
 
-                {% if error %}
-                    <div class="error-box">{{ error }}</div>
-                {% endif %}
-
-                <form action="/generate" method="POST" id="notesForm">
-                    <div class="form-group">
-                        <label for="notes">Raw Study Notes</label>
-                        <textarea id="notes" name="notes" rows="8" placeholder="Paste lecture notes or textbook chapters here..." required></textarea>
-                    </div>
-
-                    <button type="submit" class="btn-submit" id="submitBtn">✨ Generate Study Guide</button>
-                </form>
-            </div>
-        </main>
+        <form action="/generate" method="POST">
+            <label for="raw_notes">RAW STUDY NOTES</label>
+            <textarea id="raw_notes" name="raw_notes" placeholder="Paste lecture notes or textbook chapters here..."></textarea>
+            <button type="submit">+ Generate Study Guide</button>
+        </form>
     </div>
-
-    <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 </html>
